@@ -1,0 +1,287 @@
+<!-- dashboard.html (Main Dashboard) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindGuard | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        @keyframes glowGreen {
+            0% { box-shadow: 0 0 5px #10b981, 0 0 10px #10b981; }
+            100% { box-shadow: 0 0 20px #10b981, 0 0 30px #10b981; }
+        }
+        @keyframes glowYellow {
+            0% { box-shadow: 0 0 5px #f59e0b, 0 0 10px #f59e0b; }
+            100% { box-shadow: 0 0 20px #f59e0b, 0 0 30px #f59e0b; }
+        }
+        @keyframes glowRed {
+            0% { box-shadow: 0 0 5px #ef4444, 0 0 10px #ef4444; }
+            100% { box-shadow: 0 0 20px #ef4444, 0 0 30px #ef4444; }
+        }
+        .animate-glow-green { animation: glowGreen 2s ease-in-out infinite alternate; }
+        .animate-glow-yellow { animation: glowYellow 2s ease-in-out infinite alternate; }
+        .animate-glow-red { animation: glowRed 2s ease-in-out infinite alternate; }
+        .crisis-mode { animation: crisisPulse 2s infinite; }
+        @keyframes crisisPulse {
+            0%, 100% { background-color: rgba(239, 68, 68, 0.1); }
+            50% { background-color: rgba(239, 68, 68, 0.2); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row overflow-hidden">
+    
+    <!-- Crisis Banner -->
+    <div id="crisis-banner" class="hidden fixed top-0 left-0 right-0 z-50 bg-red-600 text-white p-4 shadow-lg">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-triangle-exclamation text-2xl animate-bounce"></i>
+                <div>
+                    <h3 class="font-bold text-lg">CRISIS MODE ACTIVATED</h3>
+                    <p class="text-sm opacity-90">AI has detected severe risk indicators. Immediate support available.</p>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <a href="emergency.html" class="bg-white text-red-600 px-4 py-2 rounded-lg font-bold hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-phone mr-2"></i> Get Help Now
+                </a>
+                <button onclick="toggleCrisisMode()" class="bg-red-700 px-4 py-2 rounded-lg hover:bg-red-800 transition">Dismiss</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <nav class="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col z-20 shadow-xl">
+        <div class="p-6 flex items-center gap-3 border-b border-slate-800">
+            <div class="w-8 h-8 rounded bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                <i class="fa-solid fa-brain text-white text-sm"></i>
+            </div>
+            <h1 class="text-xl font-bold tracking-tight text-white">MindGuard</h1>
+        </div>
+
+        <div class="flex-1 overflow-y-auto py-6 px-3 space-y-2">
+            <a href="dashboard.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium bg-slate-800 text-blue-400 border border-slate-700">
+                <i class="fa-solid fa-grid-2"></i> Dashboard
+            </a>
+            <a href="predictive_trends.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-all">
+                <i class="fa-solid fa-chart-line"></i> Predictive Trends
+            </a>
+            <a href="survey.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-all">
+                <i class="fa-solid fa-clipboard-list"></i> Smart Survey
+            </a>
+            <a href="action.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-all">
+                <i class="fa-solid fa-list-check"></i> Action Plan
+            </a>
+            <a href="log.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-all">
+                <i class="fa-solid fa-pills"></i> Therapy & Meds
+            </a>
+        </div>
+
+        <div class="p-4 border-t border-slate-800">
+            <div class="flex items-center gap-3 mb-4">
+                <img src="https://ui-avatars.com/api/?name=Alex+Doe&background=0D8ABC&color=fff" class="w-10 h-10 rounded-full border-2 border-slate-700">
+                <div>
+                    <p class="text-sm font-semibold text-white">Alex Doe</p>
+                    <p class="text-xs text-slate-500">Patient ID: #MG-2024</p>
+                </div>
+            </div>
+            <button onclick="toggleCrisisMode()" class="w-full py-2 px-4 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg text-sm font-medium transition-all border border-red-500/30">
+                <i class="fa-solid fa-triangle-exclamation mr-2"></i> Test Crisis Mode
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto bg-slate-950 relative" id="main-container">
+        <div class="p-6 md:p-8 max-w-7xl mx-auto">
+            
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-white mb-2">Command Center</h2>
+                <p class="text-slate-400">Real-time health monitoring & AI insights</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Status Indicator -->
+                <div class="lg:col-span-1 glass-panel rounded-2xl p-8 flex flex-col items-center justify-center text-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-b from-amber-500/10 to-transparent"></div>
+                    
+                    <div class="relative mb-6">
+                        <div id="status-orb" class="w-48 h-48 rounded-full bg-amber-500 animate-glow-yellow flex items-center justify-center status-orb relative z-10">
+                            <div class="w-40 h-40 rounded-full bg-slate-900 flex items-center justify-center">
+                                <i class="fa-solid fa-heart-pulse text-5xl text-amber-400"></i>
+                            </div>
+                        </div>
+                        <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-slate-800 px-4 py-1 rounded-full border border-slate-700 text-xs font-mono text-amber-400">
+                            AI CONFIDENCE: 94%
+                        </div>
+                    </div>
+                    
+                    <h3 id="status-label" class="text-2xl font-bold text-white mb-1">CAUTION</h3>
+                    <p class="text-sm text-slate-400">Last updated: Just now</p>
+                </div>
+
+                <!-- Why Section & Quick Actions -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Explainability Card -->
+                    <div class="glass-panel rounded-2xl p-6 border-l-4 border-amber-500">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center flex-shrink-0">
+                                <i class="fa-solid fa-robot text-blue-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-white mb-2">AI Analysis</h4>
+                                <p id="ai-analysis" class="text-slate-300 leading-relaxed">Sleep decreased 2hrs. Mood trending down. Your status is Yellow because your sleep has decreased by 2 hours over the last 3 days.</p>
+                                <div class="mt-3 flex gap-2">
+                                    <span class="px-3 py-1 rounded-full bg-slate-800 text-xs text-slate-400 border border-slate-700">
+                                        <i class="fa-solid fa-moon mr-1"></i> Sleep -12%
+                                    </span>
+                                    <span class="px-3 py-1 rounded-full bg-slate-800 text-xs text-slate-400 border border-slate-700">
+                                        <i class="fa-solid fa-brain mr-1"></i> Mood -8%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button onclick="quickLogMood()" class="glass-panel p-4 rounded-xl hover:bg-slate-800 transition-all group text-left">
+                            <div class="w-10 h-10 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                                <i class="fa-solid fa-face-smile text-xl"></i>
+                            </div>
+                            <h5 class="font-semibold text-white">Log Mood</h5>
+                            <p class="text-xs text-slate-400 mt-1">Quick 1-tap entry</p>
+                        </button>
+
+                        <a href="log.html" class="glass-panel p-4 rounded-xl hover:bg-slate-800 transition-all group text-left block">
+                            <div class="w-10 h-10 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                                <i class="fa-solid fa-pills text-xl"></i>
+                            </div>
+                            <h5 class="font-semibold text-white">Check Meds</h5>
+                            <p class="text-xs text-slate-400 mt-1">2 pending for today</p>
+                        </a>
+
+                        <a href="survey.html" class="glass-panel p-4 rounded-xl hover:bg-slate-800 transition-all group text-left block">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-3 group-hover:scale-110 transition">
+                                <i class="fa-solid fa-clipboard-question text-xl"></i>
+                            </div>
+                            <h5 class="font-semibold text-white">Assessment</h5>
+                            <p class="text-xs text-slate-400 mt-1">PHQ-9 due today</p>
+                        </a>
+                    </div>
+
+                    <!-- Emergency Button (Only shows when Red) -->
+                    <a href="emergency.html" id="emergency-btn" class="hidden w-full py-4 bg-red-500 hover:bg-red-600 text-white rounded-xl font-bold animate-pulse flex items-center justify-center gap-3 shadow-lg shadow-red-500/25">
+                        <i class="fa-solid fa-kit-medical text-xl"></i>
+                        EMERGENCY HELP - CLICK FOR IMMEDIATE SUPPORT
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mini Charts Preview -->
+            <div class="glass-panel rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-semibold text-white">7-Day Overview</h4>
+                    <a href="predictive_trends.html" class="text-sm text-blue-400 hover:text-blue-300">View Full Analysis →</a>
+                </div>
+                <div class="h-48">
+                    <canvas id="miniChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        let userStatus = 'yellow';
+        let crisisMode = false;
+
+        function toggleCrisisMode() {
+            crisisMode = !crisisMode;
+            const banner = document.getElementById('crisis-banner');
+            const main = document.getElementById('main-container');
+            const orb = document.getElementById('status-orb');
+            const label = document.getElementById('status-label');
+            const analysis = document.getElementById('ai-analysis');
+            const emergencyBtn = document.getElementById('emergency-btn');
+            
+            if(crisisMode) {
+                banner.classList.remove('hidden');
+                main.classList.add('crisis-mode');
+                userStatus = 'red';
+                
+                // Update orb to red
+                orb.className = 'w-48 h-48 rounded-full bg-red-500 animate-glow-red flex items-center justify-center status-orb relative z-10';
+                orb.querySelector('i').className = 'fa-solid fa-heart-pulse text-5xl text-red-400';
+                label.textContent = 'HIGH RISK';
+                label.className = 'text-2xl font-bold text-red-400 mb-1';
+                analysis.textContent = 'Multiple risk factors detected. Crisis indicators present. Immediate intervention recommended.';
+                emergencyBtn.classList.remove('hidden');
+            } else {
+                banner.classList.add('hidden');
+                main.classList.remove('crisis-mode');
+                userStatus = 'yellow';
+                
+                // Revert to yellow
+                orb.className = 'w-48 h-48 rounded-full bg-amber-500 animate-glow-yellow flex items-center justify-center status-orb relative z-10';
+                orb.querySelector('i').className = 'fa-solid fa-heart-pulse text-5xl text-amber-400';
+                label.textContent = 'CAUTION';
+                label.className = 'text-2xl font-bold text-white mb-1';
+                analysis.textContent = 'Sleep decreased 2hrs. Mood trending down. Your status is Yellow because your sleep has decreased by 2 hours over the last 3 days.';
+                emergencyBtn.classList.add('hidden');
+            }
+        }
+
+        function quickLogMood() {
+            alert("Mood logged: Neutral (5/10)\n\nAI Response: I've noted this. Your afternoon medication might help stabilize this.");
+        }
+
+        // Initialize Chart
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('miniChart');
+            if(ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        datasets: [{
+                            label: 'Mood Score',
+                            data: [7, 6, 5, 4, 5, 3, 4],
+                            borderColor: '#38bdf8',
+                            backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }, {
+                            label: 'Sleep (hrs)',
+                            data: [8, 7, 6, 5, 6, 4, 5],
+                            borderColor: '#a855f7',
+                            borderDash: [5, 5],
+                            tension: 0.4,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: true, labels: { color: '#94a3b8' } } },
+                        scales: {
+                            y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                            x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
