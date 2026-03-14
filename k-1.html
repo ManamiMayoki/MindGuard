@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedTrack - Design System & Screens</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Color System - Semantic Health Colors */
+            --color-red-primary: #DC2626;
+            --color-red-light: #FEE2E2;
+            --color-red-dark: #991B1B;
+            --color-red-gradient-start: #EF4444;
+            --color-red-gradient-end: #DC2626;
+            
+            --color-yellow-primary: #F59E0B;
+            --color-yellow-light: #FEF3C7;
+            --color-yellow-dark: #92400E;
+            --color-yellow-gradient-start: #FBBF24;
+            --color-yellow-gradient-end: #F59E0B;
+            
+            --color-green-primary: #10B981;
+            --color-green-light: #D1FAE5;
+            --color-green-dark: #065F46;
+            --color-green-gradient-start: #34D399;
+            --color-green-gradient-end: #10B981;
+            
+            /* Neutral Scale */
+            --color-slate-50: #F8FAFC;
+            --color-slate-100: #F1F5F9;
+            --color-slate-200: #E2E8F0;
+            --color-slate-300: #CBD5E1;
+            --color-slate-400: #94A3B8;
+            --color-slate-500: #64748B;
+            --color-slate-600: #475569;
+            --color-slate-700: #334155;
+            --color-slate-800: #1E293B;
+            --color-slate-900: #0F172A;
+            
+            /* Typography */
+            --font-primary: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            /* Spacing Scale (8px base) */
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --space-10: 40px;
+            --space-12: 48px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-red: 0 10px 25px -5px rgba(220, 38, 38, 0.3);
+            --shadow-green: 0 10px 25px -5px rgba(16, 185, 129, 0.3);
+        }
+
+        * {
+            font-family: var(--font-primary);
+        }
+
+        .font-mono {
+            font-family: var(--font-mono);
+        }
+
+        /* Animations */
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+            50% { box-shadow: 0 0 0 20px rgba(220, 38, 38, 0); }
+        }
+
+        @keyframes slide-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .animate-pulse-red {
+            animation: pulse-red 2s infinite;
+        }
+
+        .animate-slide-up {
+            animation: slide-up 0.6s ease-out forwards;
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.4s ease-out forwards;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Status Indicators */
+        .status-red {
+            background: linear-gradient(135deg, var(--color-red-gradient-start), var(--color-red-gradient-end));
+            color: white;
+        }
+
+        .status-yellow {
+            background: linear-gradient(135deg, var(--color-yellow-gradient-start), var(--color-yellow-gradient-end));
+            color: white;
+        }
+
+        .status-green {
+            background: linear-gradient(135deg, var(--color-green-gradient-start), var(--color-green-gradient-end));
+            color: white;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--color-slate-100);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-slate-300);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-slate-400);
+        }
+
+        /* Chart Customization */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Interactive Elements */
+        .btn-primary {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Navigation Active State */
+        .nav-item.active {
+            color: var(--color-red-primary);
+            position: relative;
+        }
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: var(--color-red-primary);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <!-- Navigation Between Screens -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg">M</div>
+                    <span class="font-bold text-xl tracking-tight text-slate-800">MedTrack Design System</span>
+                </div>
+                <div class="flex gap-1 bg-slate-100 p-1 rounded-xl">
+                    <button onclick="showScreen('assets')" id="nav-assets" class="px-4 py-2 rounded-lg text-sm font-medium transition-all bg-white shadow-sm text-slate-900">UI Assets</button>
+                    <button onclick="showScreen('explainability')" id="nav-explainability" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900">Explainability</button>
+                    <button onclick="showScreen('onboarding')" id="nav-onboarding" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-600 hover:text-slate-900">Onboarding</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Screen 1: UI Assets & Design System -->
+    <div id="screen-assets" class="screen pt-24 pb-12 px-4 max-w-7xl mx-auto">
+        <div class="mb-12">
+            <h1 class="text-4xl font-bold text-slate-900 mb-4">High-Fidelity UI Assets</h1>
+            <p class="text-lg text-slate-600">Complete design system for frontend implementation.</p>
+        </div>
+
+        <!-- Color Palette -->
+        <section class="mb-16 animate-slide-up">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <i class="fas fa-palette text-red-500"></i> Color System
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Red Scale -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-4 h-4 rounded-full bg-red-600"></div>
+                        <h3 class="font-bold text-lg">Critical (Red)</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-100">
+                            <code class="text-sm font-mono text-red-900">--color-red-primary</code>
+                            <span class="text-sm font-mono text-slate-600">#DC2626</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-red-100 rounded-lg">
+                            <code class="text-sm font-mono text-red-900">--color-red-light</code>
+                            <span class="text-sm font-mono text-slate-600">#FEE2E2</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-red-900 text-white rounded-lg">
+                            <code class="text-sm font-mono">--color-red-dark</code>
+                            <span class="text-sm font-mono opacity-80">#991B1B</span>
+                        </div>
+                        <div class="h-12 rounded-lg status-red flex items-center justify-center text-sm font-medium mt-4">
+                            Gradient: #EF4444 → #DC2626
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Yellow Scale -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-4 h-4 rounded-full bg-yellow-500"></div>
+                        <h3 class="font-bold text-lg">Warning (Yellow)</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border border-yellow-100">
+                            <code class="text-sm font-mono text-yellow-900">--color-yellow-primary</code>
+                            <span class="text-sm font-mono text-slate-600">#F59E0B</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-yellow-100 rounded-lg">
+                            <code class="text-sm font-mono text-yellow-900">--color-yellow-light</code>
+                            <span class="text-sm font-mono text-slate-600">#FEF3C7</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-yellow-900 text-white rounded-lg">
+                            <code class="text-sm font-mono">--color-yellow-dark</code>
+                            <span class="text-sm font-mono opacity-80">#92400E</span>
+                        </div>
+                        <div class="h-12 rounded-lg status-yellow flex items-center justify-center text-sm font-medium mt-4">
+                            Gradient: #FBBF24 → #F59E0B
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Green Scale -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-4 h-4 rounded-full bg-green-500"></div>
+                        <h3 class="font-bold text-lg">Good (Green)</h3>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-100">
+                            <code class="text-sm font-mono text-green-900">--color-green-primary</code>
+                            <span class="text-sm font-mono text-slate-600">#10B981</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-green-100 rounded-lg">
+                            <code class="text-sm font-mono text-green-900">--color-green-light</code>
+                            <span class="text-sm font-mono text-slate-600">#D1FAE5</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-green-900 text-white rounded-lg">
+                            <code class="text-sm font-mono">--color-green-dark</code>
+                            <span class="text-sm font-mono opacity-80">#065F46</span>
+                        </div>
+                        <div class="h-12 rounded-lg status-green flex items-center justify-center text-sm font-medium mt-4">
+                            Gradient: #34D399 → #10B981
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography -->
+        <section class="mb-16 animate-slide-up" style="animation-delay: 0.1s">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <i class="fas fa-font text-red-500"></i> Typography
+            </h2>
+            <div class="bg-white rounded-2xl p-8 shadow-lg border border-slate-100">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Primary Font</h3>
+                        <p class="text-4xl font-bold text-slate-900 mb-2" style="font-family: var(--font-primary)">Inter</p>
+                        <p class="text-slate-600 mb-4">Modern, highly legible sans-serif typeface optimized for UI.</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between py-2 border-b border-slate-100">
+                                <span class="text-slate-600">Weights</span>
+                                <span class="font-mono">300, 400, 500, 600, 700, 800</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-slate-100">
+                                <span class="text-slate-600">Usage</span>
+                                <span>All UI text, headings, body</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Monospace Font</h3>
+                        <p class="text-4xl font-bold text-slate-900 mb-2" style="font-family: var(--font-mono)">JetBrains Mono</p>
+                        <p class="text-slate-600 mb-4">Technical data, timestamps, dosage values.</p>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between py-2 border-b border-slate-100">
+                                <span class="text-slate-600">Weights</span>
+                                <span class="font-mono">400, 500</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-slate-100">
+                                <span class="text-slate-600">Usage</span>
+                                <span>Data points, code, timestamps</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 pt-8 border-t border-slate-100">
+                    <div class="space-y-4">
+                        <div class="flex items-baseline gap-4">
+                            <span class="text-sm text-slate-400 w-20">H1</span>
+                            <h1 class="text-4xl font-bold text-slate-900">Heading 1 - 36px Bold</h1>
+                        </div>
+                        <div class="flex items-baseline gap-4">
+                            <span class="text-sm text-slate-400 w-20">H2</span>
+                            <h2 class="text-2xl font-bold text-slate-800">Heading 2 - 24px Bold</h2>
+                        </div>
+                        <div class="flex items-baseline gap-4">
+                            <span class="text-sm text-slate-400 w-20">Body</span>
+                            <p class="text-base text-slate-600">Body text - 16px Regular (line-height 1.6)</p>
+                        </div>
+                        <div class="flex items-baseline gap-4">
+                            <span class="text-sm text-slate-400 w-20">Caption</span>
+                            <p class="text-sm text-slate-500 font-mono">Caption - 14px Mono (technical data)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Icons -->
+        <section class="mb-16 animate-slide-up" style="animation-delay: 0.2s">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <i class="fas fa-icons text-red-500"></i> Icon System
+            </h2>
+            <div class="bg-white rounded-2xl p-8 shadow-lg border border-slate-100">
+                <p class="text-slate-600 mb-6">Font Awesome 6.4.0 Pro (or free equivalent). Size scale: 16px (sm), 20px (md), 24px (lg).</p>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                    <!-- Status Icons -->
+                    <div class="flex flex-col items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <i class="fas fa-exclamation-circle text-3xl text-red-500 mb-2"></i>
+                        <span class="text-xs text-slate-600 font-mono">fa-exclamation-circle</span>
+                        <span class="text-xs text-slate-400">Critical Alert</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <i class="fas fa-exclamation-triangle text-3xl text-yellow-500 mb-2"></i>
+                        <span class="text-xs text-slate-600 font-mono">fa-exclamation-triangle</span>
+                        <span class="text-xs text-slate-400">Warning</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <i class="fas fa-check-circle text-3xl text-green-500 mb-2"></i>
+                        <span class="text-xs text-slate-600 font-mono">fa-check-circle</span>
+                        <span class="text-xs text-slate-400">Success</span>
+                    </div>
+                    
+                    <!-- Action Icons -->
+                    <div class="flex flex-col items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <i class="fas fa-pills text-3xl text-blue-500 mb-2"></i>
+                        <span class="text-xs text-slate-600 font-mono">fa-pills</span>
+                        <span class="text-xs text-slate-400">Medication</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <i class="fas fa-clock text-3xl text-slate-600 mb-2"></i>
+                        <span class="text-xs text-slate-600 font-mono">fa-clock</span>
+                        <span class="text-xs text-slate-400">Reminder</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <i class="fas fa-chart-line text-3xl text-purple-500 mb-2"></i>
+                        <span class="text-xs text-slate-600 font-mono">fa-chart-line</span>
+                        <span class="text-xs text-slate-400">Analytics</span>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <div class="flex flex-col items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <i class="fas fa-home text-3xl text-slate-600 mb-2"></i>
+                        <span class="text-xs text-slate-600 font-mono">fa-home</span>
+                        <span class="text-xs text-slate-400">Home</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <i class="fas fa-user text-3xl text-slate-600 mb-2"></i>
+                        <span class="text-xs text-slate-600 font-mono">fa-user</span>
+                        <span class="text-xs text-slate-400">Profile</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <i class="fas fa-cog text-3xl text-slate-600 mb-2"></i>
+                        <span class="text-xs text-slate-600 font-mono">fa-cog</span>
+                        <span class="text-xs text-slate-400">Settings</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <i class="fas fa-bell text-3xl text-slate-600 mb-2"></i>
+                        <span class="text-xs text-slate-600 font-mono">fa-bell</span>
+                        <span class="text-xs text-slate-400">Notifications</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <i class="fas fa-arrow-right text-3xl text-slate-600 mb-2"></i>
+                        <span class="text-xs text-slate-600 font-mono">fa-arrow-right</span>
+                        <span class="text-xs text-slate-400">Next</span>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <i class="fas fa-plus text-3xl text-slate-600 mb-2"></i>
+                        <span class="text-xs text-slate-600 font-mono">fa-plus</span>
+                        <span class="text-xs text-slate-400">Add</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Components -->
+        <section class="animate-slide-up" style="animation-delay: 0.3s">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <i class="fas fa-cube text-red-500"></i> Core Components
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Buttons -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100">
+                    <h3 class="font-bold text-lg mb-4">Buttons</h3>
+                    <div class="space-y-3">
+                        <button class="w-full py-3 px-6 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold btn-primary shadow-red flex items-center justify-center gap-2">
+                            <span>Primary Action</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button class="w-full py-3 px-6 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors">
+                            Secondary Action
+                        </button>
+                        <button class="w-full py-3 px-6 border-2 border-red-200 text-red-600 hover:bg-red-50 rounded-xl font-semibold transition-colors">
+                            Outline Button
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cards -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100">
+                    <h3 class="font-bold text-lg mb-4">Status Cards</h3>
+                    <div class="space-y-3">
+                        <div class="p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+                            <div class="flex items-center gap-2 text-red-800 font-semibold">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Critical Alert Card</span>
+                            </div>
+                            <p class="text-sm text-red-600 mt-1">Immediate attention required</p>
+                        </div>
+                        <div class="p-4 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
+                            <div class="flex items-center gap-2 text-green-800 font-semibold">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Success Card</span>
+                            </div>
+                            <p class="text-sm text-green-600 mt-1">On track status</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Screen 2: Explainability Card (The Red Zone) -->
+    <div id="screen-explainability" class="screen hidden pt-24 pb-12 px-4 max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8 animate-fade-in">
+            <div class="flex items-center gap-2 text-red-600 font-semibold mb-2">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Adherence Alert</span>
+            </div>
+            <h1 class="text-3xl font-bold text-slate-900 mb-2">Why You're in the Red Zone</h1>
+            <p class="text-slate-600">AI-powered analysis of your medication adherence patterns.</p>
+        </div>
+
+        <!-- Critical Alert Banner -->
+        <div class="bg-gradient-to-r from-red-600 to-red-700 rounded-2xl p-6 text-white mb-8 shadow-red animate-slide-up card-hover">
+            <div class="flex items-start justify-between">
+                <div class="flex items-start gap-4">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center animate-pulse-red">
+                        <i class="fas fa-exclamation text-3xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold mb-1">Adherence Score: 42%</h2>
+                        <p class="text-red-100 mb-3">You've missed 8 of 14 doses this week</p>
+                        <div class="flex gap-2">
+                            <span class="px-3 py-1 bg-white/20 rounded-full text-sm font-medium backdrop-blur-sm">
+                                <i class="fas fa-calendar-week mr-1"></i> Last 7 days
+                            </span>
+                            <span class="px-3 py-1 bg-white/20 rounded-full text-sm font-medium backdrop-blur-sm">
+                                <i class="fas fa-pills mr-1"></i> Metformin 500mg
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <button class="px-6 py-3 bg-white text-red-600 rounded-xl font-bold hover:bg-red-50 transition-colors shadow-lg">
+                    Take Action
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Explainability Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Primary Factor -->
+            <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-lg border border-slate-100 animate-slide-up card-hover" style="animation-delay: 0.1s">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Missed Dose Pattern</h3>
+                        <p class="text-sm text-slate-500">Primary risk factor identified</p>
+                    </div>
+                    <div class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-bold">
+                        -28% Impact
+                    </div>
+                </div>
+                
+                <div class="chart-container mb-4">
+                    <canvas id="missedDosesChart"></canvas>
+                </div>
+                
+                <div class="flex items-center gap-4 p-4 bg-red-50 rounded-xl border border-red-100">
+                    <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center text-white">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-red-900">Insight</p>
+                        <p class="text-sm text-red-700">You consistently miss weekend doses. Consider setting weekend-specific reminders.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contributing Factors -->
+            <div class="space-y-4 animate-slide-up" style="animation-delay: 0.2s">
+                <h3 class="text-lg font-bold text-slate-900 mb-4">Contributing Factors</h3>
+                
+                <div class="bg-white rounded-xl p-5 shadow-md border border-slate-100 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center text-yellow-600">
+                                <i class="fas fa-clock text-lg"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-slate-900">Timing Variance</p>
+                                <p class="text-xs text-slate-500">±3.2 hours average</p>
+                            </div>
+                        </div>
+                        <span class="text-yellow-600 font-bold text-sm">-12%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 65%"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-5 shadow-md border border-slate-100 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
+                                <i class="fas fa-moon text-lg"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-slate-900">Evening Doses</p>
+                                <p class="text-xs text-slate-500">60% missed after 8pm</p>
+                            </div>
+                        </div>
+                        <span class="text-orange-600 font-bold text-sm">-8%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="bg-orange-500 h-2 rounded-full" style="width: 45%"></div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-5 shadow-md border border-slate-100 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                                <i class="fas fa-calendar-alt text-lg"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-slate-900">Weekend Gap</p>
+                                <p class="text-xs text-slate-500">Sat-Sun consistency low</p>
+                            </div>
+                        </div>
+                        <span class="text-blue-600 font-bold text-sm">-5%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full" style="width: 30%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trend Analysis -->
+        <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 mb-8 animate-slide-up card-hover" style="animation-delay: 0.3s">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">30-Day Trend Analysis</h3>
+                    <p class="text-sm text-slate-500">Your adherence trajectory vs. target</p>
+                </div>
+                <div class="flex gap-2">
+                    <button class="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">7D</button>
+                    <button class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg shadow-md">30D</button>
+                    <button class="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">90D</button>
+                </div>
+            </div>
+            <div class="chart-container" style="height: 250px;">
+                <canvas id="trendChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Action Plan -->
+        <div class="bg-slate-900 rounded-2xl p-6 text-white animate-slide-up" style="animation-delay: 0.4s">
+            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                <i class="fas fa-clipboard-check text-green-400"></i>
+                Recommended Action Plan
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/20 transition-colors cursor-pointer">
+                    <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-bell text-white text-sm"></i>
+                    </div>
+                    <h4 class="font-semibold mb-1">Smart Reminders</h4>
+                    <p class="text-sm text-slate-300">Enable geofenced alerts for home location</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/20 transition-colors cursor-pointer">
+                    <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-user-friends text-white text-sm"></i>
+                    </div>
+                    <h4 class="font-semibold mb-1">Buddy System</h4>
+                    <p class="text-sm text-slate-300">Add a family member for accountability</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/20 transition-colors cursor-pointer">
+                    <div class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-capsules text-white text-sm"></i>
+                    </div>
+                    <h4 class="font-semibold mb-1">Dose Packaging</h4>
+                    <p class="text-sm text-slate-300">Switch to weekly pill organizer</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 3: Onboarding Flow -->
+    <div id="screen-onboarding" class="screen hidden pt-24 pb-12 px-4 max-w-2xl mx-auto">
+        
+        <!-- Progress Indicator -->
+        <div class="mb-8 animate-fade-in">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-sm font-medium text-slate-500" id="step-indicator">Step 1 of 4</span>
+                <button onclick="skipOnboarding()" class="text-sm text-slate-400 hover:text-slate-600 transition-colors">Skip for now</button>
+            </div>
+            <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-full bg-gradient-to-r from-red-500 to-red-600 transition-all duration-500 ease-out" style="width: 25%"></div>
+            </div>
+        </div>
+
+        <!-- Step 1: Welcome -->
+        <div id="onboarding-step-1" class="onboarding-step animate-slide-up">
+            <div class="text-center mb-8">
+                <div class="w-24 h-24 bg-gradient-to-br from-red-500 to-red-600 rounded-3xl mx-auto mb-6 flex items-center justify-center text-white text-4xl shadow-red animate-pulse-red">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-slate-900 mb-3">Welcome to MedTrack</h1>
+                <p class="text-lg text-slate-600 max-w-md mx-auto">Your personal AI-powered medication adherence companion. Never miss a dose again.</p>
+            </div>
+
+            <div class="space-y-4 mb-8">
+                <div class="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                    <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center text-red-600 flex-shrink-0">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-slate-900">Smart Predictions</h3>
+                        <p class="text-sm text-slate-600">AI identifies your risk patterns before you miss doses</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 flex-shrink-0">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-slate-900">Intelligent Reminders</h3>
+                        <p class="text-sm text-slate-600">Context-aware alerts based on your location and routine</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-600 flex-shrink-0">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-slate-900">Visual Insights</h3>
+                        <p class="text-sm text-slate-600">Understand your adherence with beautiful analytics</p>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="nextStep(2)" class="w-full py-4 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold text-lg btn-primary shadow-red flex items-center justify-center gap-2">
+                <span>Get Started</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- Step 2: Profile Setup -->
+        <div id="onboarding-step-2" class="onboarding-step hidden animate-slide-up">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">Create Your Profile</h2>
+                <p class="text-slate-600">This helps us personalize your experience.</p>
+            </div>
+
+            <form class="space-y-5 mb-8" onsubmit="event.preventDefault(); nextStep(3);">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Full Name</label>
+                    <input type="text" placeholder="John Doe" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none transition-all text-slate-900 placeholder-slate-400">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Age</label>
+                        <input type="number" placeholder="35" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none transition-all text-slate-900 placeholder-slate-400">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Timezone</label>
+                        <select class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none transition-all text-slate-900 bg-white">
+                            <option>PST (UTC-8)</option>
+                            <option>MST (UTC-7)</option>
+                            <option>CST (UTC-6)</option>
+                            <option>EST (UTC-5)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Email</label>
+                    <input type="email" placeholder="john@example.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none transition-all text-slate-900 placeholder-slate-400">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-3">Primary Caregiver (Optional)</label>
+                    <div class="flex gap-3">
+                        <button type="button" class="flex-1 py-3 px-4 border-2 border-slate-200 rounded-xl text-slate-600 hover:border-red-500 hover:text-red-600 transition-colors flex items-center justify-center gap-2">
+                            <i class="fas fa-plus"></i>
+                            <span>Add Contact</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="flex gap-3">
+                <button onclick="prevStep(1)" class="flex-1 py-4 border-2 border-slate-200 text-slate-600 rounded-xl font-bold hover:border-slate-300 transition-colors">
+                    Back
+                </button>
+                <button onclick="nextStep(3)" class="flex-1 py-4 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold btn-primary shadow-red">
+                    Continue
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Add Medication -->
+        <div id="onboarding-step-3" class="onboarding-step hidden animate-slide-up">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">Add Your Medication</h2>
+                <p class="text-slate-600">Set up your first medication reminder.</p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 mb-6">
+                <div class="flex items-start gap-4 mb-6">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg flex-shrink-0">
+                        <i class="fas fa-pills"></i>
+                    </div>
+                    <div class="flex-1">
+                        <input type="text" placeholder="Medication Name (e.g., Metformin)" class="w-full text-xl font-bold text-slate-900 placeholder-slate-400 border-none outline-none mb-1 bg-transparent">
+                        <input type="text" placeholder="Dosage (e.g., 500mg)" class="w-full text-sm text-slate-600 placeholder-slate-400 border-none outline-none bg-transparent">
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Frequency</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button class="freq-btn py-2 px-3 border-2 border-red-500 bg-red-50 text-red-700 rounded-lg text-sm font-semibold transition-all" onclick="selectFreq(this)">Once daily</button>
+                            <button class="freq-btn py-2 px-3 border-2 border-slate-200 text-slate-600 rounded-lg text-sm font-semibold hover:border-slate-300 transition-all" onclick="selectFreq(this)">Twice daily</button>
+                            <button class="freq-btn py-2 px-3 border-2 border-slate-200 text-slate-600 rounded-lg text-sm font-semibold hover:border-slate-300 transition-all" onclick="selectFreq(this)">Custom</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Reminder Time</label>
+                        <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                            <i class="fas fa-clock text-slate-400"></i>
+                            <input type="time" value="08:00" class="bg-transparent border-none outline-none text-slate-900 font-mono text-lg flex-1">
+                            <span class="text-sm text-slate-500">AM</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">With Food?</label>
+                        <div class="flex gap-3">
+                            <label class="flex-1 flex items-center gap-2 p-3 border-2 border-red-500 bg-red-50 rounded-xl cursor-pointer transition-all">
+                                <input type="radio" name="food" class="text-red-600" checked>
+                                <span class="text-sm font-semibold text-red-700">With food</span>
+                            </label>
+                            <label class="flex-1 flex items-center gap-2 p-3 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-slate-300 transition-all">
+                                <input type="radio" name="food" class="text-slate-600">
+                                <span class="text-sm font-semibold text-slate-600">Empty stomach</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="w-full py-3 border-2 border-dashed border-slate-300 text-slate-500 rounded-xl font-semibold hover:border-red-500 hover:text-red-600 transition-colors mb-6 flex items-center justify-center gap-2">
+                <i class="fas fa-plus"></i>
+                Add Another Medication
+            </button>
+
+            <div class="flex gap-3">
+                <button onclick="prevStep(2)" class="flex-1 py-4 border-2 border-slate-200 text-slate-600 rounded-xl font-bold hover:border-slate-300 transition-colors">
+                    Back
+                </button>
+                <button onclick="nextStep(4)" class="flex-1 py-4 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold btn-primary shadow-red">
+                    Continue
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 4: Notification Preferences -->
+        <div id="onboarding-step-4" class="onboarding-step hidden animate-slide-up">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">Smart Notifications</h2>
+                <p class="text-slate-600">Choose how you want to be reminded.</p>
+            </div>
+
+            <div class="space-y-4 mb-8">
+                <div class="bg-white rounded-xl p-5 shadow-md border border-slate-100 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600">
+                            <i class="fas fa-mobile-alt text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-900">Push Notifications</h3>
+                            <p class="text-sm text-slate-500">Primary reminder method</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" checked class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                    </label>
+                </div>
+
+                <div class="bg-white rounded-xl p-5 shadow-md border border-slate-100 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-600">
+                            <i class="fas fa-comment-dots text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-900">SMS Backup</h3>
+                            <p class="text-sm text-slate-500">If push fails</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" checked class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                    </label>
+                </div>
+
+                <div class="bg-white rounded-xl p-5 shadow-md border border-slate-100 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-900">Weekly Reports</h3>
+                            <p class="text-sm text-slate-500">Adherence summary</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer">
+                        <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                    </label>
+                </div>
+
+                <div class="bg-slate-50 rounded-xl p-4 border border-slate-200">
+                    <h4 class="font-semibold text-slate-900 mb-3 text-sm">Escalation Settings</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-slate-600">Notify caregiver after</span>
+                            <select class="bg-white border border-slate-200 rounded-lg px-3 py-1 text-slate-900 font-medium">
+                                <option>2 missed doses</option>
+                                <option>3 missed doses</option>
+                                <option>1 day missed</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="prevStep(3)" class="flex-1 py-4 border-2 border-slate-200 text-slate-600 rounded-xl font-bold hover:border-slate-300 transition-colors">
+                    Back
+                </button>
+                <button onclick="completeOnboarding()" class="flex-1 py-4 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold btn-primary shadow-red flex items-center justify-center gap-2">
+                    <span>Complete Setup</span>
+                    <i class="fas fa-check"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Success State -->
+        <div id="onboarding-success" class="hidden text-center py-12 animate-fade-in">
+            <div class="w-20 h-20 bg-green-500 rounded-full mx-auto mb-6 flex items-center justify-center text-white text-3xl shadow-green animate-slide-up">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-slate-900 mb-3">You're All Set!</h2>
+            <p class="text-slate-600 mb-8">Your medication reminders are now active.</p>
+            <button onclick="showScreen('explainability')" class="w-full py-4 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold btn-primary shadow-red">
+                Go to Dashboard
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Screen Navigation
+        function showScreen(screenName) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.add('hidden');
+            });
+            
+            // Show selected screen
+            document.getElementById(`screen-${screenName}`).classList.remove('hidden');
+            
+            // Update navigation
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.classList.remove('bg-white', 'shadow-sm', 'text-slate-900');
+                btn.classList.add('text-slate-600');
+            });
+            
+            const activeBtn = document.getElementById(`nav-${screenName}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-600');
+                activeBtn.classList.add('bg-white', 'shadow-sm', 'text-slate-900');
+            }
+            
+            // Initialize charts if explainability screen
+            if (screenName === 'explainability') {
+                setTimeout(initCharts, 100);
+            }
+        }
+
+        // Onboarding Flow Logic
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function updateProgress() {
+            const percentage = (currentStep / totalSteps) * 100;
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+            document.getElementById('step-indicator').textContent = `Step ${currentStep} of ${totalSteps}`;
+        }
+
+        function nextStep(step) {
+            document.getElementById(`onboarding-step-${currentStep}`).classList.add('hidden');
+            document.getElementById(`onboarding-step-${step}`).classList.remove('hidden');
+            currentStep = step;
+            updateProgress();
+        }
+
+        function prevStep(step) {
+            document.getElementById(`onboarding-step-${currentStep}`).classList.add('hidden');
+            document.getElementById(`onboarding-step-${step}`).classList.remove('hidden');
+            currentStep = step;
+            updateProgress();
+        }
+
+        function selectFreq(btn) {
+            document.querySelectorAll('.freq-btn').forEach(b => {
+                b.classList.remove('border-red-500', 'bg-red-50', 'text-red-700');
+                b.classList.add('border-slate-200', 'text-slate-600');
+            });
+            btn.classList.remove('border-slate-200', 'text-slate-600');
+            btn.classList.add('border-red-500', 'bg-red-50', 'text-red-700');
+        }
+
+        function skipOnboarding() {
+            if(confirm('Skip onboarding? You can set up medications later.')) {
+                showScreen('explainability');
+            }
+        }
+
+        function completeOnboarding() {
+            document.getElementById(`onboarding-step-${currentStep}`).classList.add('hidden');
+            document.getElementById('onboarding-success').classList.remove('hidden');
+            document.querySelector('.mb-8').classList.add('hidden'); // Hide progress bar
+        }
+
+        // Chart.js Initialization for Explainability Screen
+        let chartsInitialized = false;
+
+        function initCharts() {
+            if (chartsInitialized) return;
+            
+            // Missed Doses Pattern Chart (Bar Chart)
+            const ctx1 = document.getElementById('missedDosesChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Taken',
+                        data: [1, 1, 1, 1, 1, 0, 0],
+                        backgroundColor: '#10B981',
+                        borderRadius: 6,
+                    }, {
+                        label: 'Missed',
+                        data: [0, 0, 0, 0, 0, 1, 1],
+                        backgroundColor: '#DC2626',
+                        borderRadius: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: { family: 'Inter', size: 12 }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 1,
+                            ticks: {
+                                stepSize: 1,
+                                callback: function(value) {
+                                    return value === 1 ? 'Dose' : '';
+                                }
+                            },
+                            grid: {
+                                color: '#F1F5F9'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Trend Analysis Chart (Line Chart)
+            const ctx2 = document.getElementById('trendChart').getContext('2d');
+            
+            // Generate last 30 days of data
+            const days = Array.from({length: 30}, (_, i) => {
+                const d = new Date();
+                d.setDate(d.getDate() - (29 - i));
+                return d.getDate();
+            });
+            
+            const adherenceData = [85, 82, 88, 85, 90, 75, 70, 65, 60, 58, 55, 50, 48, 45, 42, 40, 38, 42, 45, 42, 40, 38, 35, 42, 45, 42, 40, 42, 40, 42];
+            const targetLine = Array(30).fill(80);
+
+            new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: days,
+                    datasets: [{
+                        label: 'Your Adherence %',
+                        data: adherenceData,
+                        borderColor: '#DC2626',
+                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#DC2626',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }, {
+                        label: 'Target',
+                        data: targetLine,
+                        borderColor: '#10B981',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        tension: 0,
+                        pointRadius: 0,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: { family: 'Inter', size: 12 }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#1E293B',
+                            padding: 12,
+                            cornerRadius: 8,
+                            titleFont: { family: 'Inter', size: 13 },
+                            bodyFont: { family: 'Inter', size: 12 },
+                            displayColors: false,
+                            callbacks: {
+                                title: (context) => `Day ${context[0].label}`,
+                                label: (context) => `${context.dataset.label}: ${context.parsed.y}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                },
+                                font: { family: 'Inter', size: 11 },
+                                color: '#64748B'
+                            },
+                            grid: {
+                                color: '#F1F5F9'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 10,
+                                font: { family: 'Inter', size: 11 },
+                                color: '#64748B'
+                            }
+                        }
+                    }
+                }
+            });
+
+            chartsInitialized = true;
+        }
+
+        // Initialize
+        showScreen('assets');
+    </script>
+</body>
+</html>
