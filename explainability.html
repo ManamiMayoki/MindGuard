@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Health Explainability Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5f7fb;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+width:420px;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+h2{
+text-align:center;
+}
+
+.status{
+background:#ef4444;
+color:white;
+padding:6px 12px;
+border-radius:6px;
+display:inline-block;
+margin-bottom:10px;
+}
+
+.reason{
+font-size:14px;
+color:#444;
+margin-bottom:15px;
+}
+
+canvas{
+margin-top:15px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Health Risk Status</h2>
+
+<span class="status">RED ZONE</span>
+
+<p class="reason">
+Your health risk increased due to:
+<br>
+• Missed medication
+<br>
+• Increasing glucose level
+<br>
+• Irregular sleep
+</p>
+
+<canvas id="riskChart"></canvas>
+
+</div>
+
+<script>
+
+const ctx = document.getElementById('riskChart');
+
+new Chart(ctx,{
+
+type:'line',
+
+data:{
+labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+
+datasets:[{
+
+label:"Risk Score",
+
+data:[25,30,40,60,70,85,95],
+
+borderColor:"#ef4444",
+
+backgroundColor:"rgba(239,68,68,0.2)",
+
+fill:true,
+
+tension:0.4
+
+}]
+},
+
+options:{
+responsive:true,
+scales:{
+y:{
+beginAtZero:true
+}
+}
+}
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Medication Reminder</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5f7fb;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+width:350px;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+}
+
+label{
+font-size:14px;
+font-weight:bold;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:8px 0;
+border:1px solid #ccc;
+border-radius:6px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:15px;
+background:#16a34a;
+color:white;
+border:none;
+border-radius:6px;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#15803d;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Medication Reminder Setup</h2>
+
+<form>
+
+<label>Medication Name</label>
+<input type="text" placeholder="Example: Metformin">
+
+<label>Dosage</label>
+<input type="text" placeholder="Example: 500mg">
+
+<label>Reminder Time</label>
+<input type="time">
+
+<label>Notes</label>
+<input type="text" placeholder="Before meal / After meal">
+
+<button type="button" onclick="saveReminder()">Save Reminder</button>
+
+</form>
+
+</div>
+
+<script>
+
+function saveReminder(){
+alert("Reminder Saved Successfully!");
+window.location.href="explainability.html";
+}
+
+</script>
+
+</body>
+</html>
