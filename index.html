@@ -1,113 +1,279 @@
-<!-- index.html (Login/Signup Page) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindGuard | Login</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>i_am_a_teapot</title>
+
+<style>
+:root {
+    --bg-main: #1e1b18;
+    --bg-soft: #2a2623;
+    --tea-brown: #6f4e37;
+    --light-cream: #e6dccf;
+    --text-soft: #cfc7bd;
+}
+
+/* GLOBAL */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg-main);
+    color: var(--light-cream);
+}
+
+h1, h2, h3 {
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+}
+
+p {
+    color: var(--text-soft);
+    line-height: 1.7;
+}
+
+/* HEADER */
+header {
+    background: transparent;
+    padding: 20px 0;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+nav a {
+    color: var(--light-cream);
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: var(--tea-brown);
+}
+
+/* HERO */
+.hero {
+    position: relative;
+    height: 100vh;
+}
+
+.hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(50%);
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    max-width: 500px;
+}
+
+.hero-overlay h1 {
+    font-size: 4rem;
+    margin: 0;
+}
+
+.hero-overlay span {
+    color: var(--tea-brown);
+}
+
+.hero-overlay p {
+    margin-top: 10px;
+}
+
+/* INTRO */
+.intro {
+    padding: 80px 10%;
+    text-align: center;
+    background: var(--bg-soft);
+}
+
+/* FEATURES */
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 80px 10%;
+}
+
+.card {
+    background: var(--bg-soft);
+    padding: 30px;
+    border-radius: 10px;
+    transition: 0.3s;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    border-color: var(--tea-brown);
+}
+
+/* ABOUT */
+.about {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 80px 10%;
+    align-items: center;
+}
+
+.about img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 10px;
+}
+
+.about-text {
+    max-width: 500px;
+}
+
+/* QUOTE */
+.quote {
+    text-align: center;
+    padding: 80px 10%;
+    background: var(--bg-soft);
+}
+
+.quote h2 {
+    font-weight: 400;
+    text-transform: none;
+}
+
+/* BUTTON */
+.btn {
+    margin-top: 20px;
+    display: inline-block;
+    padding: 12px 25px;
+    background: var(--tea-brown);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 30px;
+    background: #181512;
+    font-size: 0.9rem;
+    color: #999;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .hero-overlay {
+        left: 5%;
+        max-width: 90%;
+    }
+
+    .hero-overlay h1 {
+        font-size: 2.5rem;
+    }
+
+    nav {
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .about {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+</style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-md">
-        <!-- Logo -->
-        <div class="text-center mb-8">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/25">
-                <i class="fa-solid fa-brain text-white text-2xl"></i>
-            </div>
-            <h1 class="text-3xl font-bold text-white mb-2">MindGuard</h1>
-            <p class="text-slate-400">AI-Powered Mental Health Command Center</p>
-        </div>
 
-        <!-- Login Form -->
-        <div class="glass-panel rounded-2xl p-8">
-            <h2 class="text-xl font-semibold text-white mb-6 text-center">Welcome Back</h2>
-            
-            <form onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-slate-400 mb-2">Email</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-500"></i>
-                        <input type="email" required class="w-full bg-slate-900 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-blue-500 transition" placeholder="alex@example.com">
-                    </div>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-slate-400 mb-2">Password</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500"></i>
-                        <input type="password" required class="w-full bg-slate-900 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-blue-500 transition" placeholder="••••••••">
-                    </div>
-                </div>
+<body>
 
-                <div class="flex items-center justify-between text-sm">
-                    <label class="flex items-center gap-2 text-slate-400 cursor-pointer">
-                        <input type="checkbox" class="rounded bg-slate-900 border-slate-700 text-blue-500">
-                        Remember me
-                    </label>
-                    <a href="#" class="text-blue-400 hover:text-blue-300">Forgot password?</a>
-                </div>
+<!-- HEADER -->
+<header>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Features</a>
+        <a href="#">Your Journey</a>
+        <a href="#">Resources</a>
+        <a href="#" style="color: var(--terracotta-red);">Login</a>
+    </nav>
+</header>
 
-                <button type="submit" class="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition shadow-lg shadow-blue-500/25">
-                    Sign In
-                </button>
-            </form>
+<!-- HERO -->
+<section class="hero">
+    <img src="Images/circle.png" alt="Hero Image">
 
-            <div class="mt-6 text-center">
-                <p class="text-slate-400 text-sm">
-                    Don't have an account? 
-                    <a href="#" onclick="toggleSignup()" class="text-blue-400 hover:text-blue-300 font-medium">Sign up</a>
-                </p>
-            </div>
-
-            <!-- Divider -->
-            <div class="relative my-6">
-                <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-slate-700"></div>
-                </div>
-                <div class="relative flex justify-center text-sm">
-                    <span class="px-2 bg-slate-800 text-slate-500">Or continue with</span>
-                </div>
-            </div>
-
-            <!-- Social Login -->
-            <div class="grid grid-cols-2 gap-4">
-                <button class="py-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-slate-300 transition flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-google"></i> Google
-                </button>
-                <button class="py-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-slate-300 transition flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-apple"></i> Apple
-                </button>
-            </div>
-        </div>
-
-        <!-- Privacy Note -->
-        <p class="text-center text-xs text-slate-500 mt-6">
-            <i class="fa-solid fa-shield-halved mr-1"></i>
-            HIPAA Compliant • End-to-End Encrypted
+    <div class="hero-overlay">
+        <h1>Diff<span>e</span>rent?</h1>
+        <p>
+            Because being yourself is enough.
+            If you need a company, we’re here to light the way.
         </p>
     </div>
+</section>
 
-    <script>
-        function handleLogin(e) {
-            e.preventDefault();
-            // Simulate login
-            window.location.href = 'dashboard.html';
-        }
-        
-        function toggleSignup() {
-            alert('Sign up form would appear here');
-        }
-    </script>
+<!-- INTRO -->
+<section class="intro">
+    <p>
+        Track your mood, sleep, and stress with a system designed to give you clarity,
+        not confusion.
+    </p>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+    <div class="card">
+        <h3>Explainable AI</h3>
+        <p>Understand your results, not just numbers.</p>
+    </div>
+
+    <div class="card">
+        <h3>Health Dashboard</h3>
+        <p>Visualize your mental state with calm, clear insights.</p>
+    </div>
+
+    <div class="card">
+        <h3>Habit Insights</h3>
+        <p>See how your daily habits affect your well-being.</p>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+    <img src="Images/teapot.png" alt="User Image">
+
+    <div class="about-text">
+        <h2>Your Journey</h2>
+        <p>
+            Small daily patterns shape your mental health. We help you understand them.
+        </p>
+    </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote">
+    <h2>
+        “Clarity is the first step toward better mental health.”
+    </h2>
+
+    <a href="#" class="btn">Get Help</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    © 2026 i_am_a_teapot — Calm Mind, Clear Thoughts
+</footer>
+
 </body>
 </html>
