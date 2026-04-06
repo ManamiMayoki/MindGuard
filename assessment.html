@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Mending Process | i_am_a_teapot</title>
+
+<style>
+:root {
+    --bg-main: #1e1b18;
+    --bg-soft: #2a2623;
+    --tea-brown: #bb6146; 
+    --light-cream: #e6dccf;
+    --text-soft: #cfc7bd;
+    --gold: #d4af37; 
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg-main);
+    color: var(--light-cream);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* HEADER STYLE TO MATCH HOME */
+header {
+    background: rgba(30, 27, 24, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 20px 0;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    position: fixed;
+    top: 0;
+    z-index: 100;
+}
+
+header a {
+    color: var(--text-soft);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* ASSESSMENT CONTAINER */
+.assessment-container {
+    margin-top: 150px;
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+}
+
+.progress-container {
+    width: 100%;
+    height: 4px;
+    background: var(--bg-soft);
+    margin-bottom: 50px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#progress-bar {
+    width: 0%;
+    height: 100%;
+    background: var(--tea-brown);
+    transition: 0.5s ease;
+}
+
+.question-box {
+    display: none; /* Hidden by default, toggled by JS */
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.question-box.active {
+    display: block;
+}
+
+h2 {
+    font-family: 'Courier New', monospace;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    line-height: 1.4;
+}
+
+/* OPTION BUTTONS */
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.option-btn {
+    background: var(--bg-soft);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 12px;
+    color: var(--light-cream);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: 0.3s;
+    text-align: left;
+}
+
+.option-btn:hover {
+    border-color: var(--tea-brown);
+    background: #35302d;
+    transform: translateX(10px);
+}
+
+/* RESULT VIEW */
+#result-container {
+    display: none;
+    animation: fadeIn 1s ease forwards;
+}
+
+.result-card {
+    background: var(--bg-soft);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid var(--tea-brown);
+}
+
+.result-card h1 { color: var(--tea-brown); margin-bottom: 10px; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-home {
+    margin-top: 30px;
+    display: inline-block;
+    padding: 12px 30px;
+    background: var(--tea-brown);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <a href="index.html">← Back to Home</a>
+</header>
+
+<div class="assessment-container">
+    <div class="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <div class="question-box active" id="q1">
+        <h2>When you face a high-pressure situation, what is your first instinct?</h2>
+        <div class="options">
+            <button class="option-btn" onclick="nextQuestion('showcase')">Ensure I look calm and capable to others.</button>
+            <button class="option-btn" onclick="nextQuestion('useful')">Immediately start solving everyone's problems.</button>
+            <button class="option-btn" onclick="nextQuestion('broken')">Feel overwhelmed and shut down entirely.</button>
+            <button class="option-btn" onclick="nextQuestion('kintsugi')">Take a breath and reflect on what I’ve learned before.</button>
+        </div>
+    </div>
+
+    <div class="question-box" id="q2">
+        <h2>How do you feel about your "cracks" or past mistakes?</h2>
+        <div class="options">
+            <button class="option-btn" onclick="nextQuestion('showcase')">I hide them; they make me feel worthless.</button>
+            <button class="option-btn" onclick="nextQuestion('useful')">I don't have time to think about them; I have work to do.</button>
+            <button class="option-btn" onclick="nextQuestion('broken')">I feel defined by them; I am fundamentally damaged.</button>
+            <button class="option-btn" onclick="nextQuestion('kintsugi')">They are part of my history and make me unique.</button>
+        </div>
+    </div>
+
+    <div class="question-box" id="q3">
+        <h2>What does "rest" look like to you?</h2>
+        <div class="options">
+            <button class="option-btn" onclick="nextQuestion('showcase')">A performance of self-care for others to see.</button>
+            <button class="option-btn" onclick="nextQuestion('useful')">Something I feel guilty doing when others need help.</button>
+            <button class="option-btn" onclick="nextQuestion('broken')">A state of heavy, unmoving exhaustion.</button>
+            <button class="option-btn" onclick="nextQuestion('kintsugi')">A necessary time to recharge and mend.</button>
+        </div>
+    </div>
+
+    <div id="result-container">
+        <div class="result-card">
+            <p>Your assessment is complete.</p>
+            <h1 id="archetype-name">The Kintsugi Teapot</h1>
+            <p id="archetype-desc">You have a strong sense of resilience and growth...</p>
+            <a href="index.html" class="btn-home">Go to Dashboard</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentStep = 1;
+    const totalQuestions = 3;
+    const scores = { showcase: 0, useful: 0, broken: 0, kintsugi: 0 };
+
+    function nextQuestion(type) {
+        scores[type]++;
+        
+        // Hide current
+        document.getElementById(`q${currentStep}`).classList.remove('active');
+        
+        currentStep++;
+        
+        // Update Progress
+        const progress = ((currentStep - 1) / totalQuestions) * 100;
+        document.getElementById('progress-bar').style.width = progress + '%';
+
+        if (currentStep <= totalQuestions) {
+            // Show next
+            document.getElementById(`q${currentStep}`).classList.add('active');
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.querySelector('.progress-container').style.display = 'none';
+        const resultContainer = document.getElementById('result-container');
+        const archetypeTitle = document.getElementById('archetype-name');
+        const archetypeDesc = document.getElementById('archetype-desc');
+
+        // Logic to find the highest score
+        const result = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+
+        const data = {
+            showcase: {
+                name: "The Showcase Teapot",
+                desc: "You prioritize your social image and perfection, often masking your true feelings to meet high expectations."
+            },
+            useful: {
+                name: "The Useful Teapot",
+                desc: "You find value in being productive and helping others, but you are at high risk of burnout."
+            },
+            broken: {
+                name: "The Broken Teapot",
+                desc: "You are currently in a state of high distress or fragmentation. It is okay to be still while you mend."
+            },
+            kintsugi: {
+                name: "The Kintsugi Teapot",
+                desc: "You have embraced your journey, turning past pain into beautiful resilience. You are ready to help others."
+            }
+        };
+
+        archetypeTitle.innerText = data[result].name;
+        archetypeDesc.innerText = data[result].desc;
+        resultContainer.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>

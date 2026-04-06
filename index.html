@@ -9,10 +9,10 @@
 :root {
     --bg-main: #1e1b18;
     --bg-soft: #2a2623;
-    --tea-brown: #bb6146; /* Terracotta-Teapot Red */
+    --tea-brown: #bb6146; 
     --light-cream: #e6dccf;
     --text-soft: #cfc7bd;
-    --gold: #d4af37; /* For Kintsugi */
+    --gold: #d4af37; 
 }
 
 /* GLOBAL */
@@ -23,6 +23,8 @@ body {
     color: var(--light-cream);
     overflow-x: hidden;
     scroll-behavior: smooth;
+    /* Added to prevent header overlap */
+    padding-top: 80px; 
 }
 
 h1, h2, h3 {
@@ -36,42 +38,64 @@ p {
     line-height: 1.7;
 }
 
-/* FIXED HEADER */
+/* CENTERED HEADER */
 header {
-    background: rgba(30, 27, 24, 0.9);
+    background: rgba(30, 27, 24, 0.95);
     backdrop-filter: blur(10px);
-    padding: 20px 0;
+    padding: 25px 0;
     position: fixed;
     width: 100%;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
     border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 nav {
     display: flex;
-    justify-content: center;
-    gap: 40px;
+    justify-content: center; 
+    align-items: center;
+    padding: 0 10%;
+    position: relative;
 }
 
-nav a {
+.nav-links {
+    display: flex;
+    gap: 50px;
+}
+
+.nav-links a {
     color: var(--light-cream);
     text-decoration: none;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: bold;
     letter-spacing: 2px;
     text-transform: uppercase;
     transition: 0.3s;
 }
 
-nav a:hover {
-    color: var(--tea-brown);
+.nav-links a:hover { color: var(--tea-brown); }
+
+/* Mobile Menu Toggle */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+}
+
+.menu-toggle span {
+    width: 30px;
+    height: 2px;
+    background: var(--light-cream);
+    transition: 0.3s;
 }
 
 /* HERO SECTION */
 .hero {
     position: relative;
-    height: 100vh;
+    height: calc(100vh - 80px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -97,7 +121,6 @@ nav a:hover {
 .hero-overlay h1 {
     font-size: clamp(3rem, 10vw, 6rem);
     margin: 0;
-    color: var(--light-cream);
 }
 
 .hero-overlay h1 span {
@@ -105,13 +128,12 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* FEATURES CARD SECTION */
+/* FEATURES SECTION */
 .features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 30px;
-    padding: 100px 10% 50px 10%;
-    margin-top: 50px;
+    padding: 100px 10% 50px;
 }
 
 .card {
@@ -123,12 +145,9 @@ nav a:hover {
     text-align: center;
 }
 
-.card:hover {
-    transform: translateY(-10px);
-    border-color: var(--tea-brown);
-}
+.card:hover { transform: translateY(-10px); border-color: var(--tea-brown); }
 
-/* NEW: DETAILED INFO SECTION */
+/* DEEP INFO SECTION */
 .deep-info {
     padding: 100px 10%;
     background: linear-gradient(to bottom, var(--bg-main), var(--bg-soft));
@@ -141,103 +160,120 @@ nav a:hover {
     margin-bottom: 80px;
 }
 
-.info-image {
-    flex: 1;
-    position: relative;
-}
-
-.info-image img {
-    width: 100%;
-    border-radius: 20px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-}
-
-.info-content {
-    flex: 1.2;
-}
-
-.info-content h2 {
-    color: var(--tea-brown);
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
-
-.info-content ul {
-    list-style: none;
-    padding: 0;
-}
-
-.info-content li {
-    margin-bottom: 20px;
-    padding-left: 30px;
-    position: relative;
-}
-
-.info-content li::before {
-    content: '☕';
-    position: absolute;
-    left: 0;
-    color: var(--tea-brown);
-}
-
-/* ARCHETYPE SECTION */
-.archetype-section {
-    padding: 100px 10%;
-}
-
-.archetype-header {
-    text-align: center;
-    margin-bottom: 80px;
-}
-
-.archetype-header h2 {
-    font-size: 2.5rem;
-    color: var(--tea-brown);
-}
-
-.archetype-row {
-    display: flex;
-    align-items: center;
-    gap: 60px;
-    margin-bottom: 100px;
-}
+.info-image { flex: 1; }
+.info-image img { width: 100%; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+.info-content { flex: 1.2; }
+.info-content h2 { color: var(--tea-brown); margin-bottom: 20px; }
+.info-content ul { list-style: none; padding: 0; }
+.info-content li { margin-bottom: 15px; padding-left: 30px; position: relative; }
+.info-content li::before { content: '☕'; position: absolute; left: 0; color: var(--tea-brown); }
 
 .row-reverse { flex-direction: row-reverse; }
 
+/* SCREENING SECTION */
+.screening-section {
+    padding: 80px 10%;
+    text-align: center;
+    background: var(--bg-main);
+}
+
+.screening-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.test-card {
+    background: #35302d;
+    padding: 30px 20px;
+    border-radius: 12px;
+    border-bottom: 4px solid var(--tea-brown);
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.test-card h4 { margin: 0; color: var(--light-cream); }
+.test-card:hover { background: var(--bg-soft); transform: scale(1.05); }
+
+.btn-small {
+    display: inline-block;
+    margin-top: 15px;
+    color: var(--tea-brown);
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* ARCHETYPE SECTION */
+.archetype-section { padding: 100px 10%; }
+.archetype-header { text-align: center; margin-bottom: 80px; }
+.archetype-header h2 { font-size: 2.5rem; color: var(--tea-brown); }
+.archetype-row { display: flex; align-items: center; gap: 60px; margin-bottom: 100px; }
 .archetype-img { flex: 1; max-width: 500px; }
 .archetype-img img { width: 100%; border-radius: 15px; filter: sepia(30%); transition: 0.5s; }
-.archetype-img img:hover { filter: sepia(0%); transform: scale(1.02); }
-
 .archetype-text { flex: 1; }
-.archetype-text h3 { color: var(--tea-brown); font-size: 1.8rem; margin-bottom: 15px; }
+.archetype-text h3 { color: var(--tea-brown); margin-bottom: 15px; }
 .highlight-gold { color: var(--gold); border-left: 3px solid var(--gold); padding-left: 15px; }
 
-/* QUOTE & BUTTON */
+/* QUOTE */
 .quote { text-align: center; padding: 100px 10%; background: var(--bg-soft); }
 .btn { margin-top: 30px; display: inline-block; padding: 15px 40px; background: var(--tea-brown); color: white; text-decoration: none; border-radius: 50px; font-weight: bold; transition: 0.3s; }
 .btn:hover { background: #8e4432; transform: translateY(-3px); }
 
-/* FOOTER */
+/* FOOTER SECTION */
 footer {
-    padding: 60px 10%;
+    padding: 80px 10% 40px;
     background: #151311;
-    text-align: center;
     border-top: 1px solid rgba(255,255,255,0.05);
 }
 
-.footer-nav {
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: center;
-    gap: 30px;
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 50px;
+    margin-bottom: 50px;
 }
 
-.footer-nav a { color: var(--text-soft); text-decoration: none; font-size: 0.9rem; }
+.footer-brand h3 { color: var(--tea-brown); font-size: 1.5rem; margin-top: 0; }
+.footer-brand p { font-size: 0.9rem; max-width: 300px; }
+
+.footer-links h4 { color: var(--light-cream); margin-bottom: 20px; font-size: 1rem; margin-top: 0; }
+.footer-links ul { list-style: none; padding: 0; }
+.footer-links li { margin-bottom: 10px; }
+.footer-links a { color: var(--text-soft); text-decoration: none; font-size: 0.85rem; transition: 0.3s; }
+.footer-links a:hover { color: var(--tea-brown); }
+
+.footer-bottom {
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #666;
+}
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
-    .archetype-row, .info-container { flex-direction: column; text-align: center; }
-    .hero-overlay h1 { font-size: 3.5rem; }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: -10%;
+        width: 120%;
+        background: rgba(30, 27, 24, 0.98);
+        padding: 40px 0;
+        text-align: center;
+        gap: 30px;
+        z-index: 999;
+    }
+
+    .nav-links.active { display: flex; }
+    .menu-toggle { display: flex; }
+    .archetype-row, .info-container, .footer-grid { flex-direction: column; grid-template-columns: 1fr; text-align: center; }
+    .footer-brand p { margin: 0 auto; }
 }
 </style>
 </head>
@@ -246,11 +282,19 @@ footer {
 
 <header>
     <nav>
-        <a href="#">Home</a>
-        <a href="#features">Features</a>
-        <a href="#identity">Identity</a>
-        <a href="#">Resources</a>
-        <a href="#" style="color: var(--tea-brown);">Login</a>
+        <div class="nav-links" id="navLinks">
+            <a href="#">Home</a>
+            <a href="#features">Features</a>
+            <a href="#identity">Identity</a>
+            <a href="#">Resources</a>
+            <a href="#" style="color: var(--tea-brown);">Login</a>
+        </div>
+
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </nav>
 </header>
 
@@ -267,22 +311,22 @@ footer {
 <section class="features" id="features">
     <div class="card">
         <h3>Explainable AI</h3>
-        <p>We don't just provide numbers; we provide context for your mental health patterns.</p>
+        <p>We provide context for your mental health patterns, not just numbers.</p>
     </div>
     <div class="card">
         <h3>Health Dashboard</h3>
-        <p>A visual journey through your emotional states using intuitive color mapping.</p>
+        <p>A visual journey through emotional states using intuitive color mapping.</p>
     </div>
     <div class="card">
         <h3>Habit Insights</h3>
-        <p>Connect the dots between your physiological habits and psychological well-being.</p>
+        <p>Connect physiological habits to psychological well-being.</p>
     </div>
 </section>
 
 <section class="deep-info">
     <div class="info-container">
         <div class="info-image">
-            <img src="Images/deep-dive.jpg" alt="Explainable Tech illustration">
+            <img src="Images/explain.jpg" alt="Explainable Tech illustration">
         </div>
         <div class="info-content">
             <h2>The "Explainable" Difference</h2>
@@ -297,7 +341,7 @@ footer {
 
     <div class="info-container row-reverse">
         <div class="info-image">
-            <img src="Images/dashboard-preview.jpg" alt="Visual Tracking illustration">
+            <img src="Images/mental.jpg" alt="Visual Tracking illustration">
         </div>
         <div class="info-content">
             <h2>Your Mental Heatmap</h2>
@@ -308,6 +352,38 @@ footer {
                 <li><b>Historical Depth:</b> See how far you've come by viewing months of "mending" in a single glance.</li>
             </ul>
         </div>
+    </div>
+</section>
+
+<section class="screening-section">
+    <h3>Clinical Screenings</h3>
+    <p>Select a specialized assessment to begin your data-driven mending process.</p>
+    <div class="screening-grid">
+        <a href="#" class="test-card">
+            <h4>Depression</h4>
+            <p style="font-size: 0.8rem; color: #999;">PHQ-9 Assessment</p>
+            <span class="btn-small">Take Test →</span>
+        </a>
+        <a href="#" class="test-card">
+            <h4>Anxiety</h4>
+            <p style="font-size: 0.8rem; color: #999;">GAD-7 Assessment</p>
+            <span class="btn-small">Take Test →</span>
+        </a>
+        <a href="#" class="test-card">
+            <h4>Panic Attack</h4>
+            <p style="font-size: 0.8rem; color: #999;">Severity Scale</p>
+            <span class="btn-small">Take Test →</span>
+        </a>
+        <a href="#" class="test-card">
+            <h4>Bipolar</h4>
+            <p style="font-size: 0.8rem; color: #999;">Mood Spectrum</p>
+            <span class="btn-small">Take Test →</span>
+        </a>
+        <a href="#" class="test-card">
+            <h4>OCD</h4>
+            <p style="font-size: 0.8rem; color: #999;">Y-BOCS Screening</p>
+            <span class="btn-small">Take Test →</span>
+        </a>
     </div>
 </section>
 
@@ -366,18 +442,44 @@ footer {
 
 <section class="quote">
     <h2>“Your scars aren't just mended—they're illuminated.”</h2>
-    <a href="pages/assessment.html" class="btn">Start Your Mending Process</a>
+    <a href="#" class="btn">Start Your Mending Process</a>
 </section>
 
 <footer>
-    <div class="footer-nav">
-        <a href="#">Privacy</a>
-        <a href="#">Specialists</a>
-        <a href="#">About Us</a>
-        <a href="#">Support</a>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h3>i_am_a_teapot</h3>
+            <p>A digital companion designed to make the invisible visible. Your journey to understanding starts here.</p>
+        </div>
+        <div class="footer-links">
+            <h4>Navigate</h4>
+            <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Self-Assessment</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h4>Support</h4>
+            <ul>
+                <li><a href="#">Find a Specialist</a></li>
+                <li><a href="#">Crisis Hotline</a></li>
+                <li><a href="#">Community</a></li>
+            </ul>
+        </div>
     </div>
-    <p>© 2026 i_am_a_teapot — Calm Mind, Clear Thoughts. Embrace the Steam.</p>
+    <div class="footer-bottom">
+        <p>© 2026 i_am_a_teapot — Embrace the Steam.</p>
+        <p>Built for the complex mind.</p>
+    </div>
 </footer>
+
+<script>
+    function toggleMenu() {
+        const navLinks = document.getElementById('navLinks');
+        navLinks.classList.toggle('active');
+    }
+</script>
 
 </body>
 </html>
